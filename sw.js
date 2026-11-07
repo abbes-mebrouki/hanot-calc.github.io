@@ -1,5 +1,5 @@
 /* حاسبة الطلبية — service worker. Bump VERSION on every release. */
-const VERSION = 'talabiya-v1.1.0';
+const VERSION = 'talabiya-v1.2.0';
 const SHELL = [
   './', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png', './icons/icon.svg'
