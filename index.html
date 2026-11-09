@@ -161,7 +161,7 @@ button{cursor:pointer}
 .select .ic{position:absolute;inset-inline-end:10px;top:11px;pointer-events:none;color:var(--muted)}
 .tools .sp{flex:1}
 
-.pcard{display:flex;align-items:center;gap:12px;width:100%;text-align:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow);cursor:pointer}
+.pcard{display:flex;align-items:center;width:100%;text-align:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:10px 12px;box-shadow:var(--shadow);cursor:pointer;line-height:1.35}
 .pcard.off{opacity:.62;border-style:dashed;background:var(--surface-2)}
 .pcard.off .p.muted{color:var(--muted);text-decoration:line-through}
 .pcard.off .mg.muted{color:var(--muted)!important}
@@ -174,16 +174,20 @@ tbody tr.off{opacity:.55;background:var(--surface-2)}
 [dir="ltr"] .sw.on .knob{transform:translateX(18px)}
 .sw:active .knob{width:21px}
 .pcard:hover{border-color:var(--brand-soft)}
-.pcard .m{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
-.pcard .nm{font-size:18px;font-weight:700;line-height:1.3;overflow-wrap:anywhere;display:flex;align-items:flex-start;gap:8px}
-.pcard .nm .nt{min-width:0}
-.pcard .pico{display:block;flex:none;line-height:0;margin-top:1px;color:var(--brand-text)}
-.pcard .meta{font-size:13px;color:var(--muted)}
+.pcard .bd{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.pcard .r1{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.pcard .r2{display:flex;align-items:center;gap:8px;min-width:0}
+.pcard .r2 .mg{margin-inline-start:auto}
+.pcard .nm{display:flex;align-items:center;gap:6px;min-width:0;font-size:16px;font-weight:700;overflow-wrap:anywhere}
+.pcard .nt{min-width:0}
+.pcard .pico{display:block;flex:none;line-height:0;color:var(--brand-text)}
+.pcard .p{font-size:18px;font-weight:700;white-space:nowrap;flex:none}
+.pcard .r2 .chip{padding:1px 8px;font-size:12px;gap:4px}
+.pcard .r2 .chip .ic{width:12px;height:12px}
+.pcard .mg{font-size:12.5px;font-weight:600;white-space:nowrap}
+.pcard .meta{font-size:12.5px;color:var(--muted)}
 .pcard .meta b{color:var(--fg);font-weight:600}
-.pcard .fig{text-align:end;flex:none}
-.pcard .fig .p{font-size:22px;font-weight:700;white-space:nowrap}
-.pcard .fig .mg{font-size:13px;font-weight:600}
-.pcard > .ic{color:var(--faint)}
+#plist{gap:10px}
 .pcard.off .pico{color:var(--muted)}
 .pos{color:var(--good)} .neg{color:var(--bad)} .wtxt{color:var(--warn)}
 .foot{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 16px}
@@ -604,9 +608,11 @@ function filteredRows(){
 }
 function pcard(r){
   const p=r.p, off=!!p.disabled;
-  return `<div class="pcard ${off?'off':''}" data-act="open" data-id="${p.id}" role="button" tabindex="0"><button type="button" class="sw ${off?'':'on'}" data-act="toggle-p" data-id="${p.id}" role="switch" aria-checked="${!off}" aria-label="${off?'تضمين في الحسابات':'استبعاد من الحسابات'}" title="${off?'تضمين في الحسابات':'استبعاد من الحسابات'}"><span class="knob"></span></button><span class="m"><span class="nm"><span class="pico" aria-hidden="true">${ic(shoeType(p.name),20,1.9)}</span><span class="nt">${esc(p.name)}</span></span>${off?`<span class="chip neutral">${ic('x',12,2.4)} مستبعد من الحساب</span>`:chip(r.status)}
-  <span class="meta"><b>${cartonsWord(p.cartons)} × ${num(p.perCarton)} حبة</b> · ${num(r.pieces)} حبة إجمالي</span></span>
-  <span class="fig"><span class="p ${off?'muted':tone(r.net)}" style="display:block">${money(r.net)}</span><span class="mg ${off?'muted':(r.status.tone==='good'?'pos':r.status.tone==='bad'?'neg':'wtxt')}">${off?'مستبعد':`هامش ${pct(r.margin)}`}</span></span>${ic('chevL',18,2)}</div>`;
+  const sw=`<button type="button" class="sw ${off?'':'on'}" data-act="toggle-p" data-id="${p.id}" role="switch" aria-checked="${!off}" aria-label="${off?'تضمين في الحسابات':'استبعاد من الحسابات'}" title="${off?'تضمين في الحسابات':'استبعاد من الحسابات'}"><span class="knob"></span></button>`;
+  return `<div class="pcard ${off?'off':''}" data-act="open" data-id="${p.id}" role="button" tabindex="0"><span class="bd">
+    <span class="r1"><span class="nm"><span class="pico" aria-hidden="true">${ic(shoeType(p.name),18,1.9)}</span><span class="nt">${esc(p.name)}</span></span><span class="p ${off?'muted':tone(r.net)}">${money(r.net)}</span></span>
+    <span class="r2">${sw}${off?`<span class="chip neutral">${ic('x',12,2.4)} مستبعد من الحساب</span>`:chip(r.status)}<span class="mg ${off?'muted':(r.status.tone==='good'?'pos':r.status.tone==='bad'?'neg':'wtxt')}">${off?'مستبعد':`هامش ${pct(r.margin)}`}</span></span>
+    <span class="meta"><b>${cartonsWord(p.cartons)} × ${num(p.perCarton)} حبة</b> · ${num(r.pieces)} حبة إجمالي</span></span></div>`;
 }
 const COLS=[
  ['اسم الحذاء',r=>`<div style="display:flex;align-items:center;gap:8px"><button type="button" class="sw ${r.p.disabled?'':'on'}" style="transform:scale(.85)" data-act="toggle-p" data-id="${r.p.id}" role="switch" aria-checked="${!r.p.disabled}"><span class="knob"></span></button><span>${esc(r.p.name)}</span>${r.p.disabled?'<span class="chip neutral" style="font-size:11px;padding:1px 6px">مستبعد</span>':''}</div>`],['مجموع الحبات',r=>num(r.pieces)],['سعر الكرطون',r=>num(r.cartonPrice)],['مجموع الشراء',r=>num(r.purchase)],
